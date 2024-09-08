@@ -37,22 +37,7 @@ print(f"""\nВходные параметры для задачи:
 
 print(f"Этап 1. Отделение корней на отрезке [{A}, {B}]:")
 
-def roots_separation(left_border: float, right_border: float, count_of_segments: int): 
-    h = (right_border - left_border) / count_of_segments
-    x1 = left_border
-    x2 = left_border + h
-    root_segments = []
-
-    while (x2 < right_border):
-        y1 = f(x1)
-        y2 = f(x2)
-        if (y1 * y2 < 0):
-            root_segments.append([x1, x2])
-        x1 = x2
-        x2 = x1 + h
-    return root_segments
-
-root_segments = roots_separation(A, B, N)
+root_segments = roots_separation(A, B, N, f)
 
 print(f"""\n\tЗаданное пользователем количество отрезков: {N}
 \tКоличество найденных отрезков корней: {len(root_segments)}
@@ -80,7 +65,7 @@ for root_segment in root_segments:
         "Погрешность решения",
         "Невязка функции"
     ))
-    print("-" * 176)
+    print("-" * 180)
 
     (x, delta, counter) = bisection_method(root_segment, f, e)
     print(row_format.format("Метод бисекции", (root_segment[0] + root_segment[1]) / 2, counter, x, delta, abs(0 - f(x))))
@@ -94,6 +79,6 @@ for root_segment in root_segments:
     (x, delta, counter) = secant_method(root_segment, f, e)
     print(row_format.format("Метод секущих", f"[{root_segment[0]}, {root_segment[1]}]", counter, x, delta, abs(0 - f(x))))
 
-    print("-" * 176)
+    print("-" * 180)
 
 input()

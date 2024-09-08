@@ -1,5 +1,24 @@
 from typing import Callable, List
 
+def roots_separation(left_border: float, right_border: float, count_of_segments: int, f: Callable[[float], float]): 
+    h = (right_border - left_border) / count_of_segments
+    x1 = left_border
+    x2 = left_border + h
+    root_segments = []
+
+    while (x2 <= right_border):
+        y1 = f(x1)
+        y2 = f(x2)
+        if (y1 * y2 <= 0):
+            if (len(root_segments) > 0):
+                if (root_segments[-1][1] != x1):
+                    root_segments.append([x1, x2])
+            else:
+                root_segments.append([x1, x2])
+        x1 = x2
+        x2 = x1 + h
+    return root_segments
+
 def bisection_method(root_segment: List[float], function: Callable[[float], float], accuracy: float):
     a = root_segment[0]
     b = root_segment[1]
