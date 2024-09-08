@@ -21,6 +21,10 @@ jobs:
         pip install -r requirements.txt
         pip install coverage
 
+    - name: List files (for debugging)
+      run: |
+        dir
+
     - name: Run tests with coverage
       run: |
         python -m coverage run -m unittest discover -s . -p "*.py"
