@@ -68,8 +68,8 @@ counter_segments = 0
 
 for root_segment in root_segments:
     counter_segments += 1
-    header_format = "{:<30} {:<46} {:<20} {:<25} {:<25} {:>25}"
-    row_format = "{:<30} {:<46} {:<20} {:<25} {:<25} {:>25}"
+    header_format = "{:<30} {:<50} {:<20} {:<25} {:<25} {:>25}"
+    row_format = "{:<30} {:<50} {:<20} {:<25} {:<25} {:>25}"
 
     print(f"\n{counter_segments}) Отрезок - [{root_segment[0]}, {root_segment[1]}]")
     print(header_format.format(
@@ -95,3 +95,5 @@ for root_segment in root_segments:
     print(row_format.format("Метод секущих", f"[{root_segment[0]}, {root_segment[1]}]", counter, x, delta, abs(0 - f(x))))
 
     print("-" * 176)
+
+input()
