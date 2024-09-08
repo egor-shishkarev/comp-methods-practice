@@ -1,116 +1,97 @@
 from numpy import *
+from utils import *
+from methods import *
 
-func_str = "x - 10 * sin(x)" # Type your function here
+func_str = "x - 10 * sin(x)" #! Напишите свою функцию здесь
 
-print("Задача решения нелинейных уравнений")
-print(f"Текущая функция для нахождения нечетных корней - {func_str}")
-# A = int(input("Введите левую границу отрезка => "))
-# B = int(input("Введите правую границу отрезка => "))
-# print(f"Для начала отделим корни на отрезке [{A}, {B}]")
-# N = int(input("Введите количество отрезков "))
+def f(x: float) -> float:
+    return x - 10 * sin(x) #! Напишите свою функцию здесь
 
-def f(x):
-    return x - 10 * sin(x)
+def df(x: float) -> float:
+    return 1 - 10 * cos(x) #! Напишите производную своей функции здесь
 
-def df(x):
-    return 1 - 10 * cos(x)
+print("Численные методы решения нелинейных уравнений")
 
-def bisection_method(root_segment: list):
-    a = root_segment[0]
-    b = root_segment[1]
-    counter = 0
+while (True):
+    A = float_check("Введите левую границу отрезка => ")
+    B = float_check("Введите правую границу отрезка => ")
+    if (B > A):
+        break
+    print("Левая граница отрезка не может быть больше правой! Повторите ввод.")
 
-    while (b - a) > 2 * e:
-        c = (a + b) / 2
-        if (f(a) * f(c)) <= 0:
-            b = c
-        else:
-            a = c
+N = int_check("Введите количество отрезков для отделения корней => ")
 
-        counter += 1
-    
-    x = (a + b) / 2
-    delta = (b - a) / 2
-    
-    return (x, delta, counter)
+while (True):
+    degree = int_check("Введите степень точности искомого решения => ")
+    if (degree > 15):
+        print("На данный момент из-за использования типа данных float поддерживается степень точности не более 10^(-15). Повторите ввод.")
+        continue
+    break
 
-def newton_method(root_segment):
-    a = root_segment[0]
-    b = root_segment[1]
-    counter = 0
+e = 10 ** (-degree)
 
-    x_prev = (a + b) / 2
-    x_current = x_prev - (f(x_prev)) / (df(x_prev))
+print(f"""\nВходные параметры для задачи:
+\tФункция: {func_str},
+\tОтрезок поиска корней: [{A}, {B}]
+\tТочность решения: 10^({-degree})\n""")
 
-    while (abs(x_current - x_prev)) > e:
-        x_prev = x_current
-        x_current = x_prev - (f(x_prev)) / (df(x_prev))
-        counter += 1
+print(f"Этап 1. Отделение корней на отрезке [{A}, {B}]:")
 
-    return (x_current, (x_current - x_prev), counter)
+def roots_separation(left_border: float, right_border: float, count_of_segments: int): 
+    h = (right_border - left_border) / count_of_segments
+    x1 = left_border
+    x2 = left_border + h
+    root_segments = []
 
+    while (x2 < right_border):
+        y1 = f(x1)
+        y2 = f(x2)
+        if (y1 * y2 < 0):
+            root_segments.append([x1, x2])
+        x1 = x2
+        x2 = x1 + h
+    return root_segments
 
-def modified_newton_method(root_segment): 
-    a = root_segment[0]
-    b = root_segment[1]
-    x0 = (a + b) / 2
-    counter = 0
+root_segments = roots_separation(A, B, N)
 
-    x_prev = (a + b) / 2
-    x_current = x_prev - (f(x_prev)) / (df(x0))
+print(f"""\n\tЗаданное пользователем количество отрезков: {N}
+\tКоличество найденных отрезков корней: {len(root_segments)}
 
-    while (abs(x_current - x_prev)) > e:
-        x_prev = x_current
-        x_current = x_prev - (f(x_prev)) / (df(x0))
-        counter += 1
-
-    return (x_current, (x_current - x_prev), counter)
-
-def secant_method(root_segment):
-    a = root_segment[0]
-    b = root_segment[1]
-    x0 = (a + b) / 2
-    counter = 0
-
-    x_prev = a
-    x_current = b
-    x_next = x_prev - (f(x_current)) / (f(x_current) - f(x_prev)) * (x_current - x_prev)
-
-    while (abs(x_current - x_prev)) > e:
-        x_prev = x_current
-        x_current = x_next
-        x_next = x_prev - (f(x_current)) / (f(x_current) - f(x_prev)) * (x_current - x_prev)
-        counter += 1
-
-    return (x_current, (x_current - x_prev), counter)
-
-A = -5
-B = 3
-N = 10000
-e = 10 ** (-6)
-
-h = (B - A) / N
-x1 = A 
-x2 = x1 + h
-root_segments = []
-while (x2 < B):
-    y1 = f(x1)
-    y2 = f(x2)
-
-    if (y1 * y2 < 0):
-        root_segments.append([x1, x2])
-    
-    x1 = x2
-    x2 = x1 + h
+\tНайденные отрезки: """)
 
 for root_segment in root_segments:
-    print(f"\nОтрезок - [{root_segment[0]}, {root_segment[1]}]")
-    (x, delta, counter) = bisection_method(root_segment)
-    print(f"Корень уравнения - {x}, погрешность решения - {delta}, количество итераций - {counter}, невязка - {abs(0 - f(x))}")
-    (x, delta, counter) = newton_method(root_segment)
-    print(f"Корень уравнения - {x}, погрешность решения - {delta}, количество итераций - {counter}, невязка - {abs(0 - f(x))}")
-    (x, delta, counter) = modified_newton_method(root_segment)
-    print(f"Корень уравнения - {x}, погрешность решения - {delta}, количество итераций - {counter}, невязка - {abs(0 - f(x))}")
-    (x, delta, counter) = modified_newton_method(root_segment)
-    print(f"Корень уравнения - {x}, погрешность решения - {delta}, количество итераций - {counter}, невязка - {abs(0 - f(x))}")
-    
+    print("\t" + str(root_segment))
+
+print("\nЭтап 2. Нахождение корней численными методами:")
+
+counter_segments = 0
+
+for root_segment in root_segments:
+    counter_segments += 1
+    header_format = "{:<30} {:<46} {:<20} {:<25} {:<25} {:>25}"
+    row_format = "{:<30} {:<46} {:<20} {:<25} {:<25} {:>25}"
+
+    print(f"\n{counter_segments}) Отрезок - [{root_segment[0]}, {root_segment[1]}]")
+    print(header_format.format(
+        "Название метода",
+        "Начальное приближение",
+        "Количество шагов",
+        "Приближенное решение",
+        "Погрешность решения",
+        "Невязка функции"
+    ))
+    print("-" * 176)
+
+    (x, delta, counter) = bisection_method(root_segment, f, e)
+    print(row_format.format("Метод бисекции", (root_segment[0] + root_segment[1]) / 2, counter, x, delta, abs(0 - f(x))))
+
+    (x, delta, counter) = newton_method(root_segment, f, df, e)
+    print(row_format.format("Метод касательных", (root_segment[0] + root_segment[1]) / 2, counter, x, delta, abs(0 - f(x))))
+
+    (x, delta, counter) = modified_newton_method(root_segment, f, df, e)
+    print(row_format.format("Модиф. метод касательных", (root_segment[0] + root_segment[1]) / 2, counter, x, delta, abs(0 - f(x))))
+
+    (x, delta, counter) = secant_method(root_segment, f, e)
+    print(row_format.format("Метод секущих", f"[{root_segment[0]}, {root_segment[1]}]", counter, x, delta, abs(0 - f(x))))
+
+    print("-" * 176)
