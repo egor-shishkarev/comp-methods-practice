@@ -31,7 +31,12 @@ while (True):
         break
     print("Левая граница отрезка не может быть больше правой! Повторите ввод.")
 
-N = int_check("Введите количество отрезков для отделения корней => ")
+while (True):
+    N = int_check("Введите количество отрезков для отделения корней => ")
+    if (N <= 0):
+        print("Количество отрезков не может быть меньше нуля! Повторите ввод.")
+        continue
+    break
 
 while (True):
     degree = int_check("Введите степень точности искомого решения => ")
@@ -53,16 +58,36 @@ print(f"""\nВходные параметры для задачи:
 
 print(f"Этап 1. Отделение корней на отрезке [{A}, {B}]:")
 
-root_segments = roots_separation(A, B, N, f)
+while (True):
+    root_segments = roots_separation(A, B, N, f)
 
-print(
-    f"\n\tЗаданное пользователем количество отрезков: {N}",
-    f"Количество найденных отрезков корней: {len(root_segments)}",
-    "\nНайденные отрезки: "
-)
+    print(
+        f"\n\tЗаданное пользователем количество отрезков: {N}",
+        f"\n\tКоличество найденных отрезков корней: {len(root_segments)}\n",
+        "\n\tНайденные отрезки: "
+    )
 
-for root_segment in root_segments:
-    print("\t" + str(root_segment))
+    for root_segment in root_segments:
+        print("\t" + str(root_segment))
+
+    predicted_segments10 = roots_separation(A, B, N * 10, f)
+    predicted_segments100 = roots_separation(A, B, N * 100, f)
+
+    if len(root_segments) < len(predicted_segments100):
+        if len(root_segments) < len(predicted_segments10):
+            print(f"\nПри N = {N * 10} количество отрезков перемены знака",
+                  f"больше - {len(predicted_segments10)}")
+        else:
+            print(f"\nПри N = {N * 100} количество отрезков перемены знака",
+                  f"больше - {len(predicted_segments100)}")
+    decision = input("\nХотите изменить количество отрезков? (Y/N)")
+    if (decision.capitalize() == "Y"):
+        N = int_check("Введите количество отрезков для отделения корней => ")
+        if (N <= 0):
+            print("""Количество отрезков не может быть меньше нуля! Повторите \
+                  ввод.""")
+        continue
+    break
 
 print("\nЭтап 2. Нахождение корней численными методами:")
 
