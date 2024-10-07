@@ -1,7 +1,7 @@
 from typing import Callable, List
 from math import cos, pi
 
-def create_preparatory_table(function: Callable[[float], float], count_of_points: int, left_border: float, right_border: float):
+def create_preparatory_table_chebyshev(function: Callable[[float], float], count_of_points: int, left_border: float, right_border: float):
     """
 
     """
@@ -15,6 +15,19 @@ def create_preparatory_table(function: Callable[[float], float], count_of_points
 
     for i in range(count_of_points + 1):
         current_point = (left_border + right_border) / 2 + (right_border - left_border) / 2 * chebyshev_nodes[i]
+        nodes.append([current_point, function(current_point)])
+
+    return nodes
+
+def create_preparatory_table_equidistant(function: Callable[[float], float], count_of_points: int, left_border: float, right_border: float):
+    """
+
+    """
+    nodes: List[List[float]] = []
+
+
+    for i in range(count_of_points + 1):
+        current_point = left_border + i * (right_border - left_border) / count_of_points
         nodes.append([current_point, function(current_point)])
 
     return nodes

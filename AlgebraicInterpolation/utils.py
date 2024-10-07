@@ -40,10 +40,10 @@ def int_check(input_string: str) -> int:
     return x
 
 def print_table(table: List[List[float]]):
-    header_format = "{:<20} {:<20}"
+    header_format = "{:<5} {:<25} {:<25}"
     row_format = header_format
     print()
-    print(header_format.format('Точка', 'Значение в точке'))
-    print('-' * 39)
-    for element in table:
-        print(row_format.format(element[0], element[1]))
+    print(header_format.format('№', 'Точка', 'Значение в точке'))
+    print('-' * 44)
+    for i in range(len(table)):
+        print(row_format.format(str(i + 1) + ')', table[i][0], table[i][1]))
