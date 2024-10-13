@@ -1,4 +1,4 @@
-# f(x) = sqrt(1+x^2), xj = a + j * (b - a)/m, j = 0...m, a = 0, b = 0.7, x = 0.4, n = 7, m = 15.
+# Вариант 4 - a = 0, b = 0.7, x = 0.4, n = 7, m = 15.
 
 from math import sqrt
 from utils import int_check, float_check, print_table
@@ -9,10 +9,10 @@ from methods import (
     get_inaccuracy,
     sort_table_according_to_point)
 
-function_string = "√(1+x^2)"
+function_string = "√(1+x^2)" #"x^2 + 1"
 
 def function(x: float):
-    return sqrt(1 + x ** 2)
+    return sqrt(1 + x ** 2) #x ** 2 + 1
 
 print('Задача алгебраического интерполирования. Интерполяционный многочлен в форме Лагранжа.')
 print(f'Номер варианта - 4, функция - {function_string}')
@@ -44,7 +44,8 @@ while (True):
 
     print(f'\nЭтап 2 - нахождение значения интерполяционного многочлена Лагранжа:')
     print(f'\nИсходные данные -\n\tФункция - {function_string},\n\tОтрезок - [{left_border}, {right_border}],',
-          f'\n\tСтепень искомого многочлена - {degree_of_interpolation_polynomial},\n\tТаблица значений -')
+          f'\n\tСтепень искомого многочлена - {degree_of_interpolation_polynomial},\n\tТочка - {desired_point}'
+          f'\n\tТаблица значений -')
 
     print_table(sorted_table)
 

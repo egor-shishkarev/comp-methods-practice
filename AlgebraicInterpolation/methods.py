@@ -39,12 +39,12 @@ def get_value_of_Lagrange_polynomial(desired_point: float, sorted_table: List[Li
     desired_value = 0
 
     for i in range(len(sorted_table)):
-        numerator = 0
-        denominator = 0
+        numerator = 1
+        denominator = 1
         for j in range(len(sorted_table)):
             if (i != j):
-                numerator += (desired_point - sorted_table[j][0])
-                denominator += (sorted_table[i][0] - sorted_table[j][0])
+                numerator *= (desired_point - sorted_table[j][0])
+                denominator *= (sorted_table[i][0] - sorted_table[j][0])
         desired_value += (numerator / denominator) * sorted_table[i][1]
         
     return desired_value
