@@ -16,7 +16,7 @@ def function(x: float):
 
 print('Задача алгебраического интерполирования. Интерполяционный многочлен в форме Лагранжа.')
 print(f'Номер варианта - 4, функция - {function_string}')
-count_of_points = int_check('\nВведите число m - количество точек в таблице => ')
+count_of_points = int_check('\nВведите число m - количество точек в таблице - 1 => ')
 left_border = float_check('Введите левую границу отрезка => ')
 right_border = float_check('Введите правую границу отрезка => ')
 while (left_border >= right_border):
@@ -34,7 +34,7 @@ while (True):
 
     while (True):
         degree_of_interpolation_polynomial = int_check('Введите степень интерполяционного многочлена => ')
-        if (degree_of_interpolation_polynomial + 1 > count_of_points):
+        if (degree_of_interpolation_polynomial > count_of_points):
             print('Степень интерполяционного многочлена не может быть больше, чем количество точек - 1!')
             print('Повторите ввод.')
             continue
