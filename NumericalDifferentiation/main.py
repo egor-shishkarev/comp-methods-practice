@@ -1,5 +1,5 @@
 from math import sqrt, exp
-from utils import int_check, float_check, print_table
+from utils import int_check, float_check, print_table, print_derivatives_table
 from methods import create_preparatory_table_equidistant, create_derivatives_table
 
 function1_string = "√(1+x^2)"
@@ -56,7 +56,7 @@ while (True):
 initial_point = float_check("Введите начальное значение x0 => ")
 while (True):
     step = float_check("Введите шаг h > 0 => ")
-    if (step < 0):
+    if (step <= 0):
         print(f"Вы ввели недопустимое число - {step}")
         print("Повторите ввод - > 0")
         continue
@@ -66,8 +66,5 @@ preparatory_table = create_preparatory_table_equidistant(function, count_of_poin
 print_table(preparatory_table)
 
 derivative_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
-print("\n№     Производная               Погрешность")
-print("---------------------------------------------------")
-header_format = "{:<5} {:<25} {:<25}"
-for i in range(len(derivative_table[0])):
-    print(header_format.format(f"{i+1})", derivative_table[0][i], derivative_table[1][i]))
+
+print_derivatives_table(derivative_table)

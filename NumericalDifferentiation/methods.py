@@ -20,10 +20,29 @@ def create_derivatives_table(
         derivative_second: Callable[[float], float]
     ):
     list_of_first_derivatives = _get_first_derivatives(preparatory_table)
-    list_of_inaccuracy = []
+    list_of_first_derivatives_new = _get_first_derivatives_new(preparatory_table)
+    list_of_second_derivatives = _get_second_derivatives(preparatory_table)
+    list_of_inaccuracy_first = []
+    list_of_inaccuracy_first_new = []
+    list_of_inaccuracy_second = []
+    list_of_points = []
+    list_of_values = []
     for i in range(len(preparatory_table)):
-        list_of_inaccuracy.append(abs(derivative_first(preparatory_table[i][0]) - list_of_first_derivatives[i]))
-    derivative_table = [list_of_first_derivatives, list_of_inaccuracy]
+        list_of_points.append(preparatory_table[i][0])
+        list_of_values.append(preparatory_table[i][1])
+        list_of_inaccuracy_first.append(abs(derivative_first(preparatory_table[i][0]) - list_of_first_derivatives[i]))
+        list_of_inaccuracy_first_new.append(abs(derivative_first(preparatory_table[i][0]) - list_of_first_derivatives_new[i]))
+        list_of_inaccuracy_second.append(abs(derivative_second(preparatory_table[i][0]) - list_of_second_derivatives[i]))
+    derivative_table = [
+        list_of_points,
+        list_of_values,
+        list_of_first_derivatives,
+        list_of_inaccuracy_first,
+        list_of_first_derivatives_new,
+        list_of_inaccuracy_first_new,
+        list_of_second_derivatives,
+        list_of_inaccuracy_second
+    ]
     return derivative_table
 
 def _get_first_derivatives(preparatory_table: List[List[float]]):
@@ -113,7 +132,7 @@ def _get_second_derivatives(preparatory_table: List[List[float]]):
             value = 1 / (step ** 2) * (
                 preparatory_table[i + 1][1]
                 -2 * preparatory_table[i][1]
-                + preparatory_table[i + 1][1]
+                + preparatory_table[i - 1][1]
             )
         list_of_derivatives.append(value)
     

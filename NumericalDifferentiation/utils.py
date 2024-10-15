@@ -47,3 +47,21 @@ def print_table(table: List[List[float]]):
     print('-' * 51)
     for i in range(len(table)):
         print(row_format.format(str(i + 1) + ')', table[i][0], table[i][1]))
+
+def print_derivatives_table(table: List[List[float]]):
+    header_format = "{:<10} {:<15} {:<17} {:<17} {:<17} {:<17} {:<17} {:<17}"
+    row_format = "{:<10.6f} {:<15.6f} {:<17.8e} {:<17.8e} {:<17.8e} {:<17.8e} {:<17.8e} {:<17.8e}"
+    print()
+    print(header_format.format('xi', 'f(xi)', "f'(xi) 6-7-8", 'Погрешность', "f'(xi) новые", "Погрешность", "f''(xi) автор.", "Погрешность"))
+    print('-' * 123)
+    for i in range(len(table[0])):
+        print(row_format.format(
+            table[0][i],
+            table[1][i],
+            table[2][i],
+            table[3][i],
+            table[4][i],
+            table[5][i],
+            table[6][i],
+            table[7][i])
+        )
