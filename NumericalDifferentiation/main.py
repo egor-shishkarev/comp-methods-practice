@@ -1,6 +1,11 @@
 from math import sqrt, exp
-from utils import int_check, float_check, print_table, print_derivatives_table
-from methods import create_preparatory_table_equidistant, create_derivatives_table
+from utils import int_check, print_derivatives_table
+from methods import (
+    create_table,
+    choose_function,
+    create_derivatives_table,
+    Runge_Romberg
+)
 
 function1_string = "√(1+x^2)"
 function2_string = "exp(6x)"
@@ -23,96 +28,45 @@ def derivative_first2(x: float):
 def derivative_second2(x: float):
     return 36 * exp(6 * x)
 
+array_of_functions = [function1, function1_string, derivative_first1, derivative_second1,
+                      function2, function2_string, derivative_first2, derivative_second2]
+
 print('\n"Нахождение производных таблично-заданной функции по формулам численного дифференцирования"\n')
 print("Выберите функцию, для которой хотите решить задачу - ")
 
 decision = 1
-# Выбор функции
 while (True):
     match(decision):
+        case 0:
+            print("Программа завершена.")
+            break
+
         case 1:
-            print(f"1) {function1_string}, 2) {function2_string}")
-            while (True):
-                function_number = int_check("Введите номер функции => ")
-                if (function_number not in [1, 2]):
-                    print(f"\nВы ввели недопустимое число - {function_number}")
-                    print("Повторите ввод - 1 или 2")
-                    continue
-                match(function_number):
-                    case 1: 
-                        function = function1
-                        function_string = function1_string
-                        derivative_first = derivative_first1
-                        derivative_second = derivative_second1
-                    case 2:
-                        function = function2
-                        function_string = function2_string
-                        derivative_first = derivative_first2
-                        derivative_second = derivative_second2
-                break
-
-            # Выбор количества точек в таблице, стартовое значение и шаг
-            while (True):
-                count_of_points = int_check("Введите количество точек в таблице (не менее 5) => ")
-                if (count_of_points < 5):
-                    print(f"\nВы ввели недопустимое число - {count_of_points}")
-                    print("Повторите ввод - >= 5")
-                    continue
-                break
-
-            initial_point = float_check("Введите начальное значение x0 => ")
-            while (True):
-                step = float_check("Введите шаг h > 0 => ")
-                if (step <= 0):
-                    print(f"Вы ввели недопустимое число - {step}")
-                    print("Повторите ввод - > 0")
-                    continue
-                break
-
-            preparatory_table = create_preparatory_table_equidistant(function, count_of_points, initial_point, step)
-            print_table(preparatory_table)
-
-            derivative_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
-
-            print_derivatives_table(derivative_table)
+            [function, function_string, derivative_first, derivative_second] = choose_function(array_of_functions)
+            [preparatory_table, count_of_points, initial_point, step] = create_table(function, derivative_first, derivative_second)
+            derivatives_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
+            print_derivatives_table(derivatives_table)
             
         case 2:
-            # Выбор количества точек в таблице, стартовое значение и шаг
-            while (True):
-                count_of_points = int_check("Введите количество точек в таблице (не менее 5) => ")
-                if (count_of_points < 5):
-                    print(f"\nВы ввели недопустимое число - {count_of_points}")
-                    print("Повторите ввод - >= 5")
-                    continue
-                break
-
-            initial_point = float_check("Введите начальное значение x0 => ")
-            while (True):
-                step = float_check("Введите шаг h > 0 => ")
-                if (step <= 0):
-                    print(f"Вы ввели недопустимое число - {step}")
-                    print("Повторите ввод - > 0")
-                    continue
-                break
-
-            preparatory_table = create_preparatory_table_equidistant(function, count_of_points, initial_point, step)
-            print_table(preparatory_table)
-
-            derivative_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
-
-            print_derivatives_table(derivative_table)
+            [preparatory_table, count_of_points, initial_point, step] = create_table(function, derivative_first, derivative_second)
+            derivatives_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
+            print_derivatives_table(derivatives_table)
 
         case 3:
-            print("Вычисление по Рунге-Ромбергу:")
+            print("Уточнение по Рунге-Ромбергу:")
+            new_table_decision = input('Хотите выбрать новую функцию/таблицу? (Y/N) => ')
+            if (new_table_decision.upper() == 'Y'):
+                [function, function_string, derivative_first, derivative_second] = choose_function(array_of_functions)
+                [preparatory_table, count_of_points, initial_point, step] = create_table(function, derivative_first, derivative_second)
+            
+            desired_number = int_check('\nВведите номер значения, для которого хотите уточнить производную => ')
+            while (desired_number < 1 or desired_number > len(preparatory_table)):
+                desired_number = int_check('Такого значения нет в таблице, повторите ввод => ') 
 
-        case 4:
-            pass
+            Runge_Romberg(function, preparatory_table, derivative_first, derivative_second, desired_number, count_of_points, initial_point, step)
         case _:
-            pass
+            print('Такого значения нет в списке, повторите ввод!')
 
-    if (decision == 4):
-        print("Программа завершена.")
-        break
-    print("Хотите изменить параметры?")
-    decision = int_check("Введите цифру чтобы:\n1 - выбрать другую функция,\n2 - ввести новые значения параметров таблицы,\n" +
-                "3 - уточнить по Рунге-Ромбергу,\n4 - выйти из программы\n => ")
+    print("\nХотите изменить параметры?")
+    decision = int_check("Введите цифру чтобы:\n0 - выйти из программы,\n1 - выбрать другую функция,\n2 - ввести новые значения параметров таблицы,\n" +
+                "3 - уточнить по Рунге-Ромбергу\n => ")

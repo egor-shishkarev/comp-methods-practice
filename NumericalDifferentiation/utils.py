@@ -49,13 +49,14 @@ def print_table(table: List[List[float]]):
         print(row_format.format(str(i + 1) + ')', table[i][0], table[i][1]))
 
 def print_derivatives_table(table: List[List[float]]):
-    header_format = "{:<10} {:<15} {:<17} {:<17} {:<17} {:<17} {:<17} {:<17}"
-    row_format = "{:<10.6f} {:<15.6f} {:<17.8e} {:<17.8e} {:<17.8e} {:<17.8e} {:<17.8e} {:<17.8e}"
+    header_format = "{:<4} {:<10} {:<15} {:<20} {:<20} {:<20} {:<20} {:<20} {:<20}"
+    row_format = "{:<4} {:<10.6f} {:<15.6f} {:<20.10e} {:<20.10e} {:<20.10e} {:<20.10e} {:<20.10e} {:<20.10e}"
     print()
-    print(header_format.format('xi', 'f(xi)', "f'(xi) 6-7-8", 'Погрешность', "f'(xi) новые", "Погрешность", "f''(xi) автор.", "Погрешность"))
-    print('-' * 135)
+    print(header_format.format('№', 'xi', 'f(xi)', "f'(xi) 6-7-8", 'Погрешность', "f'(xi) новые", "Погрешность", "f''(xi) автор.", "Погрешность"))
+    print('-' * 150)
     for i in range(len(table[0])):
         print(row_format.format(
+            str(i + 1) + ')',
             table[0][i],
             table[1][i],
             table[2][i],
