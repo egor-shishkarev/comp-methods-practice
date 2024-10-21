@@ -227,6 +227,7 @@ def Runge_Romberg(function: Callable[[float], float],
         abs(first_derivative_accurate - first_derivative_h2),
         first_approximate_value,
         abs(first_approximate_value - first_derivative_accurate)))
+    print()
     print('-' * 64 + 'Для второй производной' + '-' * 64)
     print(row_format.format(
         desired_value,
