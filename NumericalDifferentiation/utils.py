@@ -53,7 +53,7 @@ def print_derivatives_table(table: List[List[float]]):
     row_format = "{:<4} {:<10.6f} {:<15.6f} {:<20.10e} {:<20.10e} {:<20.10e} {:<20.10e} {:<20.10e} {:<20.10e}"
     print()
     print(header_format.format('№', 'xi', 'f(xi)', "f'(xi) 6-7-8", 'Погрешность', "f'(xi) новые", "Погрешность", "f''(xi) автор.", "Погрешность"))
-    print('-' * 150)
+    print('-' * 153)
     for i in range(len(table[0])):
         print(row_format.format(
             str(i + 1) + ')',

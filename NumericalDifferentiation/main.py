@@ -58,6 +58,8 @@ while (True):
             if (new_table_decision.upper() == 'Y'):
                 [function, function_string, derivative_first, derivative_second] = choose_function(array_of_functions)
                 [preparatory_table, count_of_points, initial_point, step] = create_table(function, derivative_first, derivative_second)
+                derivatives_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
+                print_derivatives_table(derivatives_table)
             
             desired_number = int_check('\nВведите номер значения, для которого хотите уточнить производную => ')
             while (desired_number < 1 or desired_number > len(preparatory_table)):
