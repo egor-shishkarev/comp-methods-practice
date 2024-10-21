@@ -43,12 +43,12 @@ while (True):
 
         case 1:
             [function, function_string, derivative_first, derivative_second] = choose_function(array_of_functions)
-            [preparatory_table, count_of_points, initial_point, step] = create_table(function, derivative_first, derivative_second)
+            [preparatory_table, count_of_points, initial_point, step] = create_table(function)
             derivatives_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
             print_derivatives_table(derivatives_table)
             
         case 2:
-            [preparatory_table, count_of_points, initial_point, step] = create_table(function, derivative_first, derivative_second)
+            [preparatory_table, count_of_points, initial_point, step] = create_table(function)
             derivatives_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
             print_derivatives_table(derivatives_table)
 
@@ -57,7 +57,7 @@ while (True):
             new_table_decision = input('Хотите выбрать новую функцию/таблицу? (Y/N) => ')
             if (new_table_decision.upper() == 'Y'):
                 [function, function_string, derivative_first, derivative_second] = choose_function(array_of_functions)
-                [preparatory_table, count_of_points, initial_point, step] = create_table(function, derivative_first, derivative_second)
+                [preparatory_table, count_of_points, initial_point, step] = create_table(function)
                 derivatives_table = create_derivatives_table(preparatory_table, derivative_first, derivative_second)
                 print_derivatives_table(derivatives_table)
             

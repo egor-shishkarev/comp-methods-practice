@@ -138,7 +138,7 @@ def _get_second_derivatives(preparatory_table: List[List[float]]):
     
     return list_of_derivatives
 
-def create_table(function: Callable[[float], float], derivative_first: Callable[[float], float], derivative_second: Callable[[float], float]):
+def create_table(function: Callable[[float], float]):
     while (True):
         count_of_points = int_check("Введите количество точек в таблице (не менее 5) => ")
         if (count_of_points < 5):
