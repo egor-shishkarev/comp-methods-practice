@@ -70,7 +70,7 @@ def check_quadrature_formula(
     weight_function = 1 / sp.sqrt(x)
 
     integrand = weight_function * polynomial
-    accurate_integral = sp.integrate(integrand, (x, down_border, up_border)).evalf(20)
+    accurate_integral = sp.integrate(integrand, (x, down_border, up_border)).evalf(15)
 
     return interpolation_integral, accurate_integral
 

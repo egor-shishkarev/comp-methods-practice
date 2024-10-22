@@ -1,6 +1,7 @@
 from utils import positive_int_check, float_check
 from methods import *
 from math import sqrt, sin
+import sympy as sp
 
 function_string = "sin(x)"
 weight_function_string = "1 / sqrt(x)"
@@ -11,14 +12,22 @@ def function(x):
 def weight_function(x):
     return 1 / sqrt(x)
 
-print("\nПриближённое вычисление интегралов при помощи интерполяционных квадратурных формул\n")
+print('\n"Приближённое вычисление интегралов при помощи интерполяционных квадратурных формул"\n')
 
-print(f"Номер варианта 3. Подынтегральная функция - {function_string} * {weight_function_string}\n")
-down_border = float_check("Введите нижнюю границу интегрирования => ")
-up_border = float_check("Введите верхнюю границу интегрирования => ")
+print(f"Номер варианта 3. Подынтегральная функция - {weight_function_string} * {function_string}\n")
 
-print(f'\n"Точное" значение интеграла по отрезку [{down_border}, {up_border}]',
-      f'для функции ({function_string}) * ({weight_function_string}) = {get_value_of_integral(down_border, up_border)}')
+while (True):
+    down_border = float_check("Введите нижнюю границу интегрирования => ")
+    up_border = float_check("Введите верхнюю границу интегрирования => ")
+    initial_integral_accurate = get_value_of_integral(down_border, up_border)
+    print(f'\n"Точное" значение интеграла по отрезку [{down_border}, {up_border}]',
+      f'для функции {weight_function_string} * {function_string}  = {initial_integral_accurate}')
+    if not (initial_integral_accurate.is_real):
+        print("\nВычисленное значение интеграла является комплексным числом.",
+          "\nВ данной программе предусмотрены вычисления только вещественнозначных интегралов.",
+          "\nВведите другие границы интегрирования.\n")
+        continue
+    break
 
 count_of_points = positive_int_check("Введите количество узлов => ")
 print("Вводите попарно различные узлы: ")
@@ -56,6 +65,6 @@ print(f'\n"Точное" значение интеграла от многочл
 
 quadrature_value = get_value_of_quadrature_formula(coefficients, list_of_values)
 
-print(f'\n"Точное" значение интеграла - {get_value_of_integral(down_border, up_border)}')
+print(f'\n"Точное" значение интеграла - {initial_integral_accurate}')
 print(f'Значение интеграла, полученное с помощью ИКФ - {quadrature_value}')
-print(f'Погрешность вычисления - {abs(get_value_of_integral(down_border, up_border) - quadrature_value)}')
+print(f'Погрешность вычисления - {abs(initial_integral_accurate - quadrature_value)}')
