@@ -1,8 +1,9 @@
-from typing import Callable, List
+from typing import List
 import numpy as np
 import sympy as sp
 import scipy.linalg
 
+# Получение точного значения изначального интеграла
 def get_value_of_integral(down_border: float, up_border: float):
     x = sp.Symbol("x")
     p = sp.sin(x)
@@ -11,14 +12,14 @@ def get_value_of_integral(down_border: float, up_border: float):
     result = sp.integrate(f * p, (x, down_border, up_border))
     return result.evalf(30)
 
+# Получение коэффициентов для квадратурной формулы
 def get_list_of_coefficients(
-        weight_function: Callable[[float], float],
         down_border: float,
         up_border: float,
         list_of_points: List[float]
     ):
     matrix = np.array(_create_matrix(list_of_points), dtype=np.float64)
-    weight_moments = np.array(_get_weight_moments(weight_function, down_border, up_border, len(list_of_points)), dtype=np.float64)
+    weight_moments = np.array(_get_weight_moments(down_border, up_border, len(list_of_points)), dtype=np.float64)
 
     print("Моменты весовых функций: ")
     for i in range(len(list_of_points)):
@@ -27,30 +28,70 @@ def get_list_of_coefficients(
     coefficients = scipy.linalg.solve(matrix, weight_moments)
     return coefficients
 
+# Создание матрицы А со значениями xi в разных степенях
 def _create_matrix(list_of_points: List[float]):
-    matrix = [[]]
+    matrix = []
     for i in range(len(list_of_points)):
+        row = []
         for j in range(len(list_of_points)):
-            matrix[i].append(list_of_points[j] ** i)
-
-        matrix.append([])
-    matrix = matrix[:-1]
+            row.append(list_of_points[j] ** i)
+        matrix.append(row)
 
     return matrix
 
+# Получение весовых моментов - интегралов
 def _get_weight_moments(
-        weight_function: Callable[[float], float],
         down_border: float,
         up_border: float,
         count: int
     ):
     x = sp.Symbol("x")
-    p = sp.sin(x)
+    p = 1 / sp.sqrt(x)
     weight_moments = []
 
     for i in range(count):
         weight_moments.append(sp.integrate(p * (x ** i), (x, down_border, up_border)).evalf(20))
 
-    print(weight_moments)
-
     return weight_moments
+
+# Проверка квадратурной формулы на точность на многочлене N - 1 степени
+def check_quadrature_formula(
+        degree: int, 
+        coefficients: List[float],
+        list_of_points: List[float],
+        down_border: float,
+        up_border: float
+    ):
+    # Пускай коэффициентами многочлена будут - 1, 2x, 3x^2, ...
+    list_of_values = [0] * len(list_of_points)
+    for i in range(len(list_of_points)):
+        for j in range(degree + 1):
+            list_of_values[i] += (j + 1) * list_of_points[i] ** j
+
+    print("Точки и значения в точках полинома")
+    print(list_of_points)
+    print(list_of_values)
+
+    interpolation_integral = get_value_of_quadrature_formula(coefficients, list_of_values)
+
+    x = sp.Symbol("x")
+
+    polynomial = sum((i + 1) * x**i for i in range(degree + 1))
+    
+    weight_function = 1 / sp.sqrt(x)
+    
+    integrand = weight_function * polynomial
+    accurate_integral = sp.integrate(integrand, (x, down_border, up_border)).evalf(15)
+
+    return interpolation_integral, accurate_integral
+    
+# Получение значения квадратурной формулы
+def get_value_of_quadrature_formula(
+        coefficients: List[float],
+        list_of_values: List[float],
+    ):
+    interpolation_integral = 0
+    for i in range(len(list_of_values)):
+        interpolation_integral += coefficients[i] * list_of_values[i]
+
+    return interpolation_integral

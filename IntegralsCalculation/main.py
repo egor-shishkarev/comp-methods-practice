@@ -1,10 +1,8 @@
 from utils import positive_int_check, float_check
 from methods import *
 from math import sqrt, sin
-import numpy as np
-import sympy as sp
 
-#Вариант 3
+# Вариант 3
 # [𝑎, 𝑏] = [0, 1], 𝑓(𝑥) = sin(𝑥), 𝜌(𝑥) = 1 / sqrt(x)
 
 function_string = "sin(x)"
@@ -16,15 +14,6 @@ def function(x):
 def weight_function(x):
     return 1 / sqrt(x)
 
-# 6. Сделать проверку на точность ИКФ на многочлене степени 𝑁 − 1, если 
-# число узлов КФ равно 𝑁. Результаты проверки отразить на экране.
-
-# 7. Вывести значение интеграла, полученное при помощи построенной ИКФ
-# (не менее 12 знаков после запятой). 
-
-# 8. Сравнить полученное при помощи ИКФ значение с "точным" значением из 
-# матпакета
-
 print("\nПриближённое вычисление интегралов при помощи интерполяционных квадратурных формул\n")
 down_border = float_check("Введите нижнюю границу интегрирования => ")
 up_border = float_check("Введите верхнюю границу интегрирования => ")
@@ -34,25 +23,40 @@ print(f'"Точное" значение интеграла по отрезку [
 
 count_of_points = positive_int_check("Введите количество узлов => ")
 print("Вводите попарно различные узлы: ")
-set_of_points = set()
+list_of_points = []
+
 for i in range(count_of_points):
     point = float_check(f'"x{i+1}" = ')
-    try:
-        previous_length = len(set_of_points)
-    except (TypeError):
-        previous_length = 0
 
-    set_of_points.add(point)
-    current_length = len(set_of_points)
-
-    while previous_length == current_length:
+    # Проверяем, есть ли такой узел уже
+    while point in list_of_points:
         print("Такой узел уже есть, повторите ввод!")
         point = float_check(f'"x{i+1}" = ')
-        set_of_points.add(point)
-        current_length = len(set_of_points)
 
-list_of_points = list(set_of_points)
-coefficients = get_list_of_coefficients(weight_function, down_border, up_border, list_of_points)
+    list_of_points.append(point)
+
+list_of_values = [function(x) for x in list_of_points]
+
+coefficients = get_list_of_coefficients(down_border, up_border, list_of_points)
 
 for i in range(count_of_points):
     print(f"Для точки - {list_of_points[i]} коэффициент - {coefficients[i]}")
+
+print(f"Проведем проверку точности ИКФ на многочлене {count_of_points - 1} степени: ")
+
+# Создаем строковое представление многочлена
+polynomial_string = " + ".join([f"{i+1}*x^{i}" for i in range(len(list_of_points)-1, 0, -1)]) + " + 1"
+print(polynomial_string)
+
+interpolation_integral, accurate_integral = check_quadrature_formula(
+    len(list_of_points) - 1, coefficients, list_of_points, down_border, up_border
+)
+
+print(f'"Точное" значение интеграла от многочлена - {accurate_integral}\n'
+      f'Приближенное значение - {interpolation_integral}\n'
+      f'Погрешность - {abs(accurate_integral - interpolation_integral)}')
+
+quadrature_value = get_value_of_quadrature_formula(coefficients, list_of_values)
+
+print(f'Значение интеграла, полученное с помощью ИКФ - {quadrature_value}')
+print(f'Погрешность вычисления - {abs(get_value_of_integral(down_border, up_border) - quadrature_value)}')
