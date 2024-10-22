@@ -3,7 +3,6 @@ import numpy as np
 import sympy as sp
 import scipy.linalg
 
-# Получение точного значения изначального интеграла
 def get_value_of_integral(down_border: float, up_border: float):
     x = sp.Symbol("x")
     p = sp.sin(x)
@@ -12,7 +11,6 @@ def get_value_of_integral(down_border: float, up_border: float):
     result = sp.integrate(f * p, (x, down_border, up_border))
     return result.evalf(20)
 
-# Получение коэффициентов для квадратурной формулы
 def get_list_of_coefficients(
         down_border: float,
         up_border: float,
@@ -28,7 +26,6 @@ def get_list_of_coefficients(
     coefficients = scipy.linalg.solve(matrix, weight_moments)
     return coefficients
 
-# Создание матрицы А со значениями xi в разных степенях
 def _create_matrix(list_of_points: List[float]):
     matrix = []
     for i in range(len(list_of_points)):
@@ -39,7 +36,6 @@ def _create_matrix(list_of_points: List[float]):
 
     return matrix
 
-# Получение весовых моментов - интегралов
 def _get_weight_moments(
         down_border: float,
         up_border: float,
@@ -54,7 +50,6 @@ def _get_weight_moments(
 
     return weight_moments
 
-# Проверка квадратурной формулы на точность на многочлене N - 1 степени
 def check_quadrature_formula(
         degree: int, 
         coefficients: List[float],
@@ -78,8 +73,7 @@ def check_quadrature_formula(
     accurate_integral = sp.integrate(integrand, (x, down_border, up_border)).evalf(20)
 
     return interpolation_integral, accurate_integral
-    
-# Получение значения квадратурной формулы
+
 def get_value_of_quadrature_formula(
         coefficients: List[float],
         list_of_values: List[float],

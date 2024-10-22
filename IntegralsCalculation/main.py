@@ -2,9 +2,6 @@ from utils import positive_int_check, float_check
 from methods import *
 from math import sqrt, sin
 
-# Вариант 3
-# [𝑎, 𝑏] = [0, 1], 𝑓(𝑥) = sin(𝑥), 𝜌(𝑥) = 1 / sqrt(x)
-
 function_string = "sin(x)"
 weight_function_string = "1 / sqrt(x)"
 
@@ -30,7 +27,6 @@ list_of_points = []
 for i in range(count_of_points):
     point = float_check(f'"x{i+1}" = ')
 
-    # Проверяем, есть ли такой узел уже
     while point in list_of_points:
         print("Такой узел уже есть, повторите ввод!")
         point = float_check(f'"x{i+1}" = ')
@@ -47,7 +43,6 @@ for i in range(count_of_points):
 
 print(f"\nПроведем проверку точности ИКФ на многочлене {count_of_points - 1} степени: ")
 
-# Создаем строковое представление многочлена
 polynomial_string = " + ".join([f"{i+1}*x^{i}" for i in range(len(list_of_points)-1, 0, -1)]) + " + 1"
 print(polynomial_string)
 
