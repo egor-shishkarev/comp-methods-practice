@@ -28,35 +28,58 @@ def antiderivative(x: float):
     return 1 / 2 * (x ** 2 * exp(2 * x) - x * exp(2 * x) + 1 / 2 * exp(2 * x))
 
 def const(x: float):
-    return [1, x]
+    return 1
 
 def first_polynomial(x: float):
-    return [2 * x + 3, x ** 2 + 3 * x]
+    return x
  
 def second_polynomial(x: float):
-    return [4 * x ** 2 - 3 * x + 1, 4 / 3 * x ** 3 - 3 / 2 * x ** 2 + x]
+    return x ** 2
 
 def third_polynomial(x: float):
-    return [9 * x ** 3 + 4 * x ** 2 - 7 * x - 2, 9 / 4 * x ** 4 + 4 / 3 * x ** 3 - 7 / 2 * x ** 2 - 2 * x]
+    return x ** 3
 
-print(f'Вычисляем значение интеграла для функции f(x) = {function_string}')
+def antiderivative_const(x: float):
+    return x
 
-down_border = float_check('Введите нижнюю границу интегрирования => ')
-up_border = float_check('Введите верхнюю границу интегрирования => ')
+def antiderivative_first(x: float):
+    return 1 / 2 * x ** 2
+
+def antiderivative_second(x: float):
+    return 1 / 3 * x ** 3
+
+def antiderivative_third(x: float):
+    return 1 / 4 * x ** 4
+
+print(f'Вычисляем значение интеграла для функции f(x) = {function_string}\n')
+
+decision = "N"
+
 while (True):
-    if (up_border < down_border):
-        print('Верхняя граница не может быть меньше нижней! Повторите ввод.')
-        down_border = float_check('Введите нижнюю границу интегрирования => ')
-        up_border = float_check('Введите верхнюю границу интегрирования => ')
-        continue
-    break
+    down_border = float_check('Введите нижнюю границу интегрирования => ')
+    up_border = float_check('Введите верхнюю границу интегрирования => ')
+    while (True):
+        if (up_border < down_border):
+            print('Верхняя граница не может быть меньше нижней! Повторите ввод.')
+            down_border = float_check('Введите нижнюю границу интегрирования => ')
+            up_border = float_check('Введите верхнюю границу интегрирования => ')
+            continue
+        break
 
-accurate_integral = antiderivative(up_border) - antiderivative(down_border)
+    accurate_integral = antiderivative(up_border) - antiderivative(down_border)
 
-print(f'Точное значение интеграла, вычисленное с помощью первообразной = {accurate_integral}')
+    print(f'Точное значение интеграла, вычисленное с помощью первообразной = {accurate_integral}\n')
 
-print('Проверим формулы и их степени точности на многочленах степени 0 - 3: ')
+    if (decision.lower() == 'n'):
+        print('Проверим формулы и их алгебраические степени точности на многочленах степени 0 - 3: \n')
 
-# check_ADA()
+        check_ADA(down_border, up_border, 
+                [const, first_polynomial, second_polynomial, third_polynomial],
+                [antiderivative_const, antiderivative_first, antiderivative_second, antiderivative_third]
+        )
 
-print_table(accurate_integral, function, down_border, up_border)
+    print_table(accurate_integral, function, down_border, up_border)
+
+    decision = input("\nХотите ввести новые границы интегрирования? (Y/N) => ")
+    if (decision.lower() != 'y'):
+        break
