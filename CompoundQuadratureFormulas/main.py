@@ -39,7 +39,7 @@ print(f'Вычисляем значение интеграла для функц
 
 down_border = float_check('Введите нижнюю границу интегрирования => ')
 up_border = float_check('Введите верхнюю границу интегрирования => ')
-count_of_intervals = positive_int_check('Введите число промежутков деления (> 0) => ')
+count_of_intervals = positive_int_check('Введите число промежутков деления (> 1) => ')
 while (True):
     if (up_border < down_border):
         print('Верхняя граница не может быть меньше нижней! Повторите ввод.')
@@ -64,7 +64,7 @@ check_ADA(
 
 print_table(function, down_border, up_border, count_of_intervals, accurate_integral)
 
-multiplier = positive_int_check('\nВведите параметр l - множитель для числа промежутков (> 0) => ')
+multiplier = positive_int_check('\nВведите параметр l - множитель для числа промежутков (> 1) => ')
 
 count_of_intervals_new = count_of_intervals * multiplier
 
