@@ -51,8 +51,8 @@ while (True):
 accurate_integral = antiderivative(up_border) - antiderivative(down_border)
 
 print(f'\nВходные параметры:\n\tA = {down_border},\n\tB = {up_border},', 
-      f'\n\tm = {count_of_intervals},\n\th = {(up_border - down_border) / count_of_intervals},\n\tФункция = {function_string}',
-      f'\n\tJ = {accurate_integral}')
+    f'\n\tm = {count_of_intervals},\n\th = {(up_border - down_border) / count_of_intervals},\n\tФункция = {function_string}',
+    f'\n\tJ = {accurate_integral}')
 
 check_ADA(
     down_border,
@@ -64,12 +64,39 @@ check_ADA(
 
 print_table(function, down_border, up_border, count_of_intervals, accurate_integral)
 
-multiplier = positive_int_check('\nВведите параметр l - множитель для числа промежутков (> 1) => ')
+while True:
+    decision = int_check('\nВыберите действие:\n0 - выйти из программы,' +
+      '\n1 - увеличить количество отрезков (вместе с уточнением по Рунге),\n2 - ввести новые параметры\n=> ')
+    match (decision):
+        case 0:
+            break
 
-count_of_intervals_new = count_of_intervals * multiplier
+        case 1:
+            multiplier = positive_int_check('\nВведите параметр l - множитель для числа промежутков (> 1) => ')
+            count_of_intervals_new = count_of_intervals * multiplier
+            print_table(function, down_border, up_border, count_of_intervals_new, accurate_integral)
+            print_runge_correction(function, down_border, up_border, count_of_intervals, multiplier, accurate_integral)
+            count_of_intervals = count_of_intervals_new
 
-print_table(function, down_border, up_border, count_of_intervals_new, accurate_integral)
+        case 2:
+            down_border = float_check('Введите нижнюю границу интегрирования => ')
+            up_border = float_check('Введите верхнюю границу интегрирования => ')
+            count_of_intervals = positive_int_check('Введите число промежутков деления (> 1) => ')
+            while (True):
+                if (up_border < down_border):
+                    print('Верхняя граница не может быть меньше нижней! Повторите ввод.')
+                    down_border = float_check('Введите нижнюю границу интегрирования => ')
+                    up_border = float_check('Введите верхнюю границу интегрирования => ')
+                    continue
+                break
 
-print_runge_correction(function, down_border, up_border, count_of_intervals, multiplier, accurate_integral)
+            accurate_integral = antiderivative(up_border) - antiderivative(down_border)
 
-# Сделать меню выбора
+            print(f'\nВходные параметры:\n\tA = {down_border},\n\tB = {up_border},', 
+                f'\n\tm = {count_of_intervals},\n\th = {(up_border - down_border) / count_of_intervals},\n\tФункция = {function_string}',
+                f'\n\tJ = {accurate_integral}')
+            
+            print_table(function, down_border, up_border, count_of_intervals, accurate_integral)
+
+        case _:
+            print('Введено недопустимое значение! Повторите ввод.')

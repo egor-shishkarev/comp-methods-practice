@@ -82,6 +82,7 @@ def print_table(
 
     header_format = "{:>23} {:>20} {:>23} {:>24} {:>27}"
     row_format = "{:>23} {:>20.10e} {:>23.10e} {:>24.10e} {:>26.10f}%"
+    row_format_special = "{:>23} {:>20.10e} {:>23.10e} {:>24.10e} {:>27}"
     print(f"\nТаблица для количества отрезков m = {count_of_intervals}:\n")
     print(header_format.format("Метод СКФ", "Точное значение", "Приближенное значение", "Абсолютная погрешность", "Относительная погрешность"))
     print('-' * 121)
@@ -91,8 +92,12 @@ def print_table(
     for i in range(5):
         approximate_value = methods_functions[i](function, down_border, up_border, count_of_intervals)
         inaccuracy = abs(approximate_value - accurate_integral)
-        relative_inaccuracy = inaccuracy / abs(accurate_integral)
-        print(row_format.format(methods_names[i], accurate_integral, approximate_value, inaccuracy, relative_inaccuracy * 100))
+        try:
+            relative_inaccuracy = inaccuracy / abs(accurate_integral) * 100
+            print(row_format.format(methods_names[i], accurate_integral, approximate_value, inaccuracy, relative_inaccuracy))
+        except(ZeroDivisionError):
+            relative_inaccuracy = '##############' 
+            print(row_format_special.format(methods_names[i], accurate_integral, approximate_value, inaccuracy, relative_inaccuracy))
 
 def print_runge_correction(
         function: Callable[[float], float],
@@ -116,6 +121,7 @@ def print_runge_correction(
 
     header_format = "{:>23} {:>20} {:>23} {:>24} {:>27}"
     row_format = "{:>23} {:>20.10e} {:>23.10e} {:>24.10e} {:>26.10f}%"
+    row_format_special = "{:>23} {:>20.10e} {:>23.10e} {:>24.10e} {:>27}"
     print('\nУточнение по принципу Рунге:')
     print(f"Для количества отрезков m = {count_of_intervals} и m * l = {count_of_intervals * multiplier}:\n")
     print(header_format.format("Метод СКФ", "Точное значение", "Приближенное значение", "Абсолютная погрешность", "Относительная погрешность"))
@@ -123,7 +129,12 @@ def print_runge_correction(
     for i in range(5):
         runge_value = runge_correction(values_m[i], values_ml[i], multiplier, ADA[i])
         inaccuracy = abs(runge_value - accurate_integral)
-        print(row_format.format(methods_names[i], accurate_integral, runge_value, inaccuracy, inaccuracy / abs(accurate_integral) * 100))
+        try:
+            relative_inaccuracy = inaccuracy / abs(accurate_integral) * 100
+            print(row_format.format(methods_names[i], accurate_integral, runge_value, inaccuracy, relative_inaccuracy))
+        except (ZeroDivisionError):
+            relative_inaccuracy = '##############'
+            print(row_format_special.format(methods_names[i], accurate_integral, runge_value, inaccuracy, relative_inaccuracy))
     
 def runge_correction(first_value: float, second_values: float, multiplier: float, ADA: float):
     return (multiplier ** (ADA + 1) * second_values - first_value) / (multiplier ** (ADA + 1) - 1)
