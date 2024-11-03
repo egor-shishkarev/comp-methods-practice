@@ -135,8 +135,7 @@ def check_ADA(
         antiderivatives: List[Callable[[float], float]],
         count_of_intervals: int
     ):
-
-    print("Метод вычисления: ")
+    print("\nМетод вычисления: ")
     methods_names = ['Левый прямоугольник', 'Правый прямоугольник', 'Средний прямоугольник', 'Трапеция', 'Симпсон', '3/8']
     methods_functions = [left_rectangle, right_rectangle, middle_rectangle, trapezoid, simpson]
     ADA = [0, 0, 1, 1, 3]
@@ -154,4 +153,4 @@ def check_ADA(
             accurate_integral = abs(antiderivatives[j](up_border) - antiderivatives[j](down_border))
             inaccuracy = abs(approximate_value - accurate_integral)
             print(row_format.format("1" * (j == 0) + "x" * (j == 1) + f"x^{j}" * (j >= 2), approximate_value, accurate_integral, inaccuracy))
-            
+        

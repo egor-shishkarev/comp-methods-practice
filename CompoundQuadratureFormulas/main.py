@@ -72,4 +72,4 @@ print_table(function, down_border, up_border, count_of_intervals_new, accurate_i
 
 print_runge_correction(function, down_border, up_border, count_of_intervals, multiplier, accurate_integral)
 
-# Сделать меню выбора, написать теорию
+# Сделать меню выбора
