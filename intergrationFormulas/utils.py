@@ -64,7 +64,7 @@ def check_ADA(
         print("\t" + "-" * 71)
         for j in range(ADA[i] + 1):
             approximate_value = sub_function(polynomials[j])
-            accurate_integral = abs(antiderivatives[j](up_border) - antiderivatives[j](down_border))
+            accurate_integral = antiderivatives[j](up_border) - antiderivatives[j](down_border)
             inaccuracy = abs(approximate_value - accurate_integral)
             print(row_format.format("1" * (j == 0) + "x" * (j == 1) + f"x^{j}" * (j >= 2), approximate_value, accurate_integral, inaccuracy))
             
