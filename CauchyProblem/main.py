@@ -11,11 +11,13 @@ original_point = 0
 
 function_string = "y'(x) = -y(x) + y^2(x)"
 taylor_function_string = "1/2 - 1/4 * x + 1/48 * x^3 - 1/480 * x^5 + 17/80640 * x^7 - 31/1451520 * x^9"
+original_function_string = "1/(1+e^x)"
 # taylor_function_string = "1/2 - 1/4 * x + 1/48 * x^3"
 
 print('\nЧисленное решение Задачи Коши для обыкновенного дифференциального уравнения первого порядка\n')
 print(f'Дифференциальное уравнение - {function_string}')
 print('Задача Коши: y(0) = 0,5')
+print(f'Точное решение задачи Коши - {original_function_string}')
 print(f'Разложение в ряд Тейлора - {taylor_function_string}')
 
 last_values = []
@@ -41,13 +43,13 @@ while True:
 
     last_values.append(print_table(runge_kutta_method, *parameters))
 
-    print_adams_table(function, step, count_of_points, [taylor_function(original_point + step * i) for i in range(-2, 3)])
+    # print_adams_table(function, step, count_of_points, [taylor_function(original_point + step * i) for i in range(-2, 3)])
 
     last_values.append(print_table(extrapolation_adams_method, *parameters))
 
     print_comparison_table(last_values, original_function, original_point + count_of_points * step)
     last_values = []
-    decision = input('Хотите ввести новые параметры задачи? (Y/N) => ')
+    decision = input('\nХотите ввести новые параметры задачи? (Y/N) => ')
     if decision.lower() == 'y':
         continue
     break

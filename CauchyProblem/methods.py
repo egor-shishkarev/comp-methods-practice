@@ -3,10 +3,10 @@ from typing import Callable, List
 def extrapolation_adams_method(values: List[float], function: Callable[[float], float], step: float, count_of_points: int):
     function_values = [function(y) for y in values]
 
-    first_differences = [function_values[i] - function_values[i + 1] for i in range(len(function_values) - 1)]
-    second_differences = [first_differences[i] - first_differences[i + 1] for i in range(len(first_differences) - 1)]
-    third_differences = [second_differences[i] - second_differences[i + 1] for i in range(len(second_differences) - 1)]
-    fourth_differences = [third_differences[i] - third_differences[i + 1] for i in range(len(third_differences) - 1)]
+    first_differences = [(- function_values[i] + function_values[i + 1]) for i in range(len(function_values) - 1)]
+    second_differences = [- first_differences[i] + first_differences[i + 1] for i in range(len(first_differences) - 1)]
+    third_differences = [- second_differences[i] + second_differences[i + 1] for i in range(len(second_differences) - 1)]
+    fourth_differences = [- third_differences[i] + third_differences[i + 1] for i in range(len(third_differences) - 1)]
 
     current_value = values[-1]
 
@@ -21,10 +21,10 @@ def extrapolation_adams_method(values: List[float], function: Callable[[float], 
         values.append(current_value)
         function_values.append(function(current_value))
 
-        first_differences.append(function_values[-2] - function_values[-1])
-        second_differences.append(first_differences[-2] - first_differences[-1])
-        third_differences.append(second_differences[-2] - second_differences[-1])
-        fourth_differences.append(third_differences[-2] - third_differences[-1])
+        first_differences.append(function_values[-1] - function_values[-2])
+        second_differences.append(first_differences[-1] - first_differences[-2])
+        third_differences.append(second_differences[-1] - second_differences[-2])
+        fourth_differences.append(third_differences[-1] - third_differences[-2])
 
     return [values, function_values, first_differences, second_differences, third_differences, fourth_differences]
 
