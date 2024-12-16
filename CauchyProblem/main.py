@@ -41,7 +41,7 @@ while True:
 
     last_values.append(print_table(runge_kutta_method, *parameters))
 
-    #print_adams_table(function, step, count_of_points, [taylor_function(original_point + step * i) for i in range(-2, 3)])
+    print_adams_table(function, step, count_of_points, [taylor_function(original_point + step * i) for i in range(-2, 3)])
 
     last_values.append(print_table(extrapolation_adams_method, *parameters))
 

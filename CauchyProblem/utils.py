@@ -100,8 +100,9 @@ def print_adams_table(function: Callable[[float], float], step: float, count_of_
     [values, function_values, first_differences, second_differences, third_differences, fourth_differences] = extrapolation_adams_method(values, function, step, count_of_points)
     header_format = "{:>6} {:>20} {:>25} {:>20} {:>20} {:>20} {:>20}"
     row_format = "{:>6} {:>20} {:>25} {:>20} {:>20} {:>20} {:>20}"
+    print('\nТаблица разностей для метода Адамса\n')
     print(header_format.format('Точка', 'Значение точки', "Значение функции y'", 'Первая разность', 'Вторая разность', 'Третья разность', 'Четвертая разность'))
-    print('-' * 111)
+    print('-' * 137)
     for i in range(count_of_points + 3):
         print(row_format.format(
             f'y{i - 2}',
@@ -112,7 +113,7 @@ def print_adams_table(function: Callable[[float], float], step: float, count_of_
             _get_value(third_differences, i),
             _get_value(fourth_differences, i),
         ))
-    return
+    print('-' * 137)
 
 def _get_value(list_of_values: List[float], index: int):
     try:

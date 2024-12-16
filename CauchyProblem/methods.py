@@ -1,21 +1,16 @@
 from typing import Callable, List
 
 def extrapolation_adams_method(values: List[float], function: Callable[[float], float], step: float, count_of_points: int):
-    # Рассчитываем f(y) для начальных значений
     function_values = [function(y) for y in values]
 
-    # Рассчитываем конечные разности
     first_differences = [function_values[i] - function_values[i + 1] for i in range(len(function_values) - 1)]
     second_differences = [first_differences[i] - first_differences[i + 1] for i in range(len(first_differences) - 1)]
     third_differences = [second_differences[i] - second_differences[i + 1] for i in range(len(second_differences) - 1)]
     fourth_differences = [third_differences[i] - third_differences[i + 1] for i in range(len(third_differences) - 1)]
 
-    # Текущее значение
     current_value = values[-1]
 
-    # Вычисляем новые значения
     for _ in range(3, count_of_points + 1):
-        # Добавляем новое значение y_{n+1}
         current_value += step * (
             function_values[-1] +
             1 / 2 * first_differences[-1] +
@@ -24,17 +19,14 @@ def extrapolation_adams_method(values: List[float], function: Callable[[float], 
             251 / 720 * fourth_differences[-1]
         )
         values.append(current_value)
-        new_f = function(current_value)
-        function_values.append(new_f)
+        function_values.append(function(current_value))
 
-        # Пересчитываем конечные разности
         first_differences.append(function_values[-2] - function_values[-1])
         second_differences.append(first_differences[-2] - first_differences[-1])
         third_differences.append(second_differences[-2] - second_differences[-1])
         fourth_differences.append(third_differences[-2] - third_differences[-1])
 
     return [values, function_values, first_differences, second_differences, third_differences, fourth_differences]
-
 
 def runge_kutta_method(first_value: float, function: Callable[[float], float], step: float, count_of_points: int):
     list_of_values = []
