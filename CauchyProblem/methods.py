@@ -45,7 +45,7 @@ def euler_method(first_value: float, function: Callable[[float], float], step: f
     list_of_values = []
     current_value = first_value
     for _ in range(1, count_of_points + 1):
-        current_value = current_value + step * function(current_value) # y_k+1 = y_k + h * f(y_k), так как y' = -y + y^2, то есть зависит только от y 
+        current_value = current_value + step * function(current_value)
         list_of_values.append(current_value)
     return list_of_values
 

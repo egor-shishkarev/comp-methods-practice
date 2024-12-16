@@ -45,9 +45,6 @@ while True:
 
     last_values.append(print_table(extrapolation_adams_method, *parameters))
 
-    # Для всех методов найти абсолютную погрешность для последней точки
-    # Предложить ввести новые точки
-
     print_comparison_table(last_values, original_function, original_point + count_of_points * step)
     last_values = []
     decision = input('Хотите ввести новые параметры задачи? (Y/N) => ')

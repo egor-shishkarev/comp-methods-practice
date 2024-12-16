@@ -10,7 +10,6 @@ def float_check(input_string: str) -> float:
             print("Вы ввели неправильное значение, повторите ввод!")
     return x
 
-
 def int_check(input_string: str) -> int:
     while (True):
         try:
