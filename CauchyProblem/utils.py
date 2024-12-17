@@ -60,8 +60,8 @@ def print_table(calc_function: Callable[[float], float], original_function: Call
         start, end = -2, count_of_points + 1
     elif (calc_function == extrapolation_adams_method):
         taylor_values = [taylor_function(original_point + i * step) for i in range(-2, 3)]
-        calc_function_values = extrapolation_adams_method(taylor_values, function, step, count_of_points)[0]
-        start, end = -2, count_of_points + 1
+        start, end = 3, count_of_points + 1
+        calc_function_values = extrapolation_adams_method(taylor_values, function, step, count_of_points)[0][2 + start:]
     else:
         calc_function_values = calc_function(original_function(original_point), function,  step, count_of_points)
         start, end = 1, count_of_points + 1

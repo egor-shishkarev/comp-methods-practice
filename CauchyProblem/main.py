@@ -35,18 +35,24 @@ while True:
    
     last_values.append(print_table(taylor_function, *parameters))
 
+    #input()
     last_values.append(print_table(euler_method, *parameters))
 
+    #input()
     last_values.append(print_table(euler_first_method, *parameters))
 
+    #input()
     last_values.append(print_table(euler_second_method, *parameters))
 
+    #input()
     last_values.append(print_table(runge_kutta_method, *parameters))
 
     # print_adams_table(function, step, count_of_points, [taylor_function(original_point + step * i) for i in range(-2, 3)])
 
+    #input()
     last_values.append(print_table(extrapolation_adams_method, *parameters))
 
+    #input()
     print_comparison_table(last_values, original_function, original_point + count_of_points * step)
     last_values = []
     decision = input('\nХотите ввести новые параметры задачи? (Y/N) => ')
