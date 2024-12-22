@@ -1,10 +1,10 @@
 from utils import *
 from methods import *
 
-print('\nПриближенное вычисление интегралов при помощи квадратурных формул Наивысшей Алгебраической Степени Точности\n')
+print('\nПриближенное вычисление интегралов при помощи квадратурных формул Наивысшей Алгебраической Степени Точности')
 
 while True:
-    print(f'Выберите весовую функцию:\n1 - "{weight_1_string}",\n2 - "{weight_2_string}",\n3 - "{my_weight_string}",\n0 - Выйти')
+    print(f'\nВыберите весовую функцию:\n1 - "{weight_1_string}",\n2 - "{weight_2_string}",\n3 - "{my_weight_string}",\n0 - Выйти')
     while True:
         decision = int_check('=> ')
         if decision not in [0, 1, 2, 3]:
@@ -39,6 +39,8 @@ while True:
         continue
     print(f'Точное значение интеграла - {accurate_integral}')
 
+    print('\n\n"Вычисление интеграла с помощью ИКФ с N узлами"\n\n')
+
     count_of_points = positive_int_check("Введите количество узлов => ")
     print("Вводите попарно различные узлы: ")
     list_of_points = []
@@ -70,28 +72,25 @@ while True:
     )
 
     print(f'\n"Точное" значение интеграла от многочлена - {accurate_polynomial_integral}\n'
-        f'Приближенное значение - {quadrature_polynomial_integral}\n'
-        f'Погрешность - {abs(quadrature_polynomial_integral - accurate_polynomial_integral)}')
+        f'Приближенное значение интеграла от многочлена - {quadrature_polynomial_integral}\n'
+        f'Погрешность интеграла от многочлена - {abs(quadrature_polynomial_integral - accurate_polynomial_integral)}')
 
     quadrature_value = get_value_of_quadrature_formula(coefficients, list_of_values)
 
     print(f'\n"Точное" значение интеграла - {accurate_integral}')
     print(f'Значение интеграла, полученное с помощью ИКФ - {quadrature_value}')
     print(f'Погрешность вычисления - {abs(accurate_integral - quadrature_value)}')
+
+    print('\n\n"Вычисление интеграла с помощью КФ НАСТ"\n\n')
    
     coefficients, nodes = get_list_of_coefficients_highest_degree(down_border, up_border, count_of_points, weight)
     quadrature_polynomial_integral, accurate_polynomial_integral = check_quadrature_formula_highest_degree(count_of_points, coefficients, nodes, down_border, up_border, weight)
     print(f'\nПроведем проверку точности КФ НАСТ на многочлене:\n0.175 * x^{2 * count_of_points - 1} - 2.55 * x + 1.125')
     print(f'\n"Точное" значение интеграла от многочлена - {accurate_polynomial_integral}\n'
-        f'Приближенное значение - {quadrature_polynomial_integral}\n'
-        f'Погрешность - {abs(quadrature_polynomial_integral - accurate_polynomial_integral)}')
+        f'Приближенное значение интеграла от многочлена - {quadrature_polynomial_integral}\n'
+        f'Погрешность интеграла от многочлена - {abs(quadrature_polynomial_integral - accurate_polynomial_integral)}')
 
     quadrature_value_highest_degree = get_value_of_quadrature_formula_highest_degree(nodes, coefficients)
-    print(f'\nЗначение интеграла по КФ НАСТ - {quadrature_value_highest_degree}')
-    print(f'Погрешность по сравнению с точным значением - {abs(accurate_integral - quadrature_value_highest_degree)}')
-
-# Три варианта веса - 1, 1 / sqrt(1 - x^2) - на [a, b]
-# Вариант 3 [a, b] = [0, 1], f(x) = sin(x), p(x) = 1 / sqrt(x)
-
-
-
+    print(f'\n"Точное" значение интеграла - {accurate_integral}')
+    print(f'Значение интеграла по КФ НАСТ - {quadrature_value_highest_degree}')
+    print(f'Погрешность вычисления - {abs(accurate_integral - quadrature_value_highest_degree)}')

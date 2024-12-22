@@ -32,11 +32,13 @@ def get_list_of_coefficients_highest_degree(
         down_border: float,
         up_border: float,
         count: int,
-        weight: Callable[[float], float], ):
+        weight: Callable[[float], float]
+    ):
     weight_moments = _get_weight_moments(down_border, up_border, 2 * count, weight)
     print('Моменты весовых функций КФ НАСТ:')
     for i in range(len(weight_moments)):
         print(f'\tДля степени x = {i}: {weight_moments[i]}')
+    
     matrix = []
     for i in range(count):
         row = []
@@ -44,19 +46,24 @@ def get_list_of_coefficients_highest_degree(
             row.append(weight_moments[i + j])
         matrix.append(row)
     matrix = np.array(matrix, dtype=np.float64)
+
     column = [-weight_moments[i] for i in range(count, 2 * count)]
     column = np.array(column, dtype=np.float64)
-    coefficients_of_equation = np.array(scipy.linalg.solve(matrix, column)) # коэффициенты уравнения
-    print('Найденный ортогональный многочлен:')
+
+    coefficients_of_equation = np.array(scipy.linalg.solve(matrix, column))
+
+    print('\nНайденный ортогональный многочлен:')
     polynomial_string = ""
     polynomial_string += f'x^{count}'
     for i in range(len(coefficients_of_equation)):
-        polynomial_string += f'+{coefficients_of_equation[i]}*x^{count - i - 1}'
-    print(polynomial_string.replace('+-', '-').replace('*x^0', ''))
+        polynomial_string += f' + {coefficients_of_equation[i]}*x^{count - i - 1}'
+    print(polynomial_string.replace('+ -', '- ').replace('*x^0', ''))
+
     nodes = np.array(np.roots(np.append(coefficients_of_equation, 1)[::-1]))
-    print('Узлы КФ НАСТ:')
+    print('\nУзлы КФ НАСТ:')
     for i in range(len(nodes)):
-        print(nodes[i], end = ' ')
+        print(f'\t{nodes[i]}')
+
     coefficients = []
     for i, xi in enumerate(nodes):
         def lagrange_basis(x):
@@ -71,7 +78,7 @@ def get_list_of_coefficients_highest_degree(
 
     print('\nКоэффициенты КФ НАСТ:')
     for i in range(len(coefficients)):
-        print(coefficients[i], end = ' ')
+        print(f'\t{coefficients[i]}')
 
     return coefficients, nodes
 
@@ -83,18 +90,14 @@ def check_quadrature_formula_highest_degree(
         up_border: float,
         weight: Callable[[float], float],
     ):
-    # Многочлен вида 0.175*x^(2N-1) - 2.55*x + 1.125
     list_of_values = []
     for i in range(len(nodes)):
-        print(f'Узел - {nodes[i]}')
         list_of_values.append(0.175 * nodes[i] ** (2 * degree - 1) - 2.55 * nodes[i] + 1.125)
-        print(f'Полученное значение - {list_of_values[i]}')
-    print(f'\nПолученные значения - {list_of_values}')
 
     quadrature_integral = 0
     for i in range(len(list_of_values)):
         quadrature_integral += list_of_values[i] * coefficients[i]
-        
+
     x = sp.Symbol("x")
     polynomial = 0.175 * x ** (2 * degree - 1) - 2.55 * x + 1.125
     weights = {
