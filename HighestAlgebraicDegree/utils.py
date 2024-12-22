@@ -21,7 +21,7 @@ def int_check(input_string: str) -> int:
 
 def positive_int_check(input_string: str) -> int:
     while (True):
-        x = int_check(input(input_string))
+        x = int_check(input_string)
         if x <= 0:
             print('Вы ввели неположительное значение, повторите ввод!')
             continue
