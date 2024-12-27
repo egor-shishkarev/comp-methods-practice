@@ -49,12 +49,12 @@ def print_table(calc_function: Callable[[float], float], original_function: Call
     name = function_names.get(calc_function)
     inaccuracy = inaccuracy_of_functions.get(calc_function)
 
-    print(f'\nСравнение точного решения и решения "{name}" {inaccuracy}\n')
+    # print(f'\nСравнение точного решения и решения "{name}" {inaccuracy}\n')
     header_format = "{:>6} {:>15} {:>20} {:>25} {:>15}"
     row_format = "{:>6} {:>15.6f} {:>20.6e} {:>25.6e} {:>15.6e}"
     
-    print(header_format.format('Точка', 'Значение точки', 'Точное y(x)', f'Значение {name}', 'Погрешность'))
-    print('-' * 85)
+    # print(header_format.format('Точка', 'Значение точки', 'Точное y(x)', f'Значение {name}', 'Погрешность'))
+    # print('-' * 85)
     if (calc_function == taylor_function):
         calc_function_values = [taylor_function(original_point + step * i) for i in range(-2, count_of_points + 1)]
         start, end = -2, count_of_points + 1
@@ -73,14 +73,14 @@ def print_table(calc_function: Callable[[float], float], original_function: Call
         calc_function_value = calc_function_values[i - start]
         if i == end - 1:
             last_value = calc_function_value
-        print(row_format.format(
-            f'x{i}',
-            point,
-            function_value,
-            calc_function_value,
-            abs(function_value - calc_function_value),
-        ))
-    print('-' * 85)
+        # print(row_format.format(
+        #     f'x{i}',
+        #     point,
+        #     function_value,
+        #     calc_function_value,
+        #     abs(function_value - calc_function_value),
+        # ))
+    #print('-' * 85)
     return last_value
 
 def print_comparison_table(last_values: List[float], original_function: Callable[[float], float], last_point: float):
